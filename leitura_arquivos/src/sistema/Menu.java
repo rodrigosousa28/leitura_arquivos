@@ -1,6 +1,5 @@
 package sistema;
 
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Menu {
@@ -12,10 +11,12 @@ public class Menu {
 		
 		Menu.esperar();
 		
-		System.out.println("Observação: Caso queira acessar, o banco de dados com"
-				+ " as disciplinas criadas está "
+		System.out.println("\nObservação 1: Caso queira acessar, o banco de dados com"
+				+ "\nas disciplinas criadas está "
 				+ "localizado no seguinte caminho: "
 				+ "C:\\BancoDados");
+		System.out.println("\nObservação 2: Caso você informe uma disciplina que não existe, "
+				+ "ela será criada automaticamente no banco de dados");
 		
 		Menu.esperar();
 		System.out.println();
@@ -28,14 +29,7 @@ public class Menu {
 		System.out.println("5. Consultar resultados de um aluno");
 		System.out.println("6. Sair");
 		System.out.print("\nEscolha:");
-	}
-	
-	static String cadastrarDisciplina() {
-		Scanner tec = new Scanner(System.in);
-		System.out.print("\nDigite o nome da disciplina que vai cadastrar: ");
-		String disciplina = tec.next();
-		tec.close();
-		return disciplina.toLowerCase();
+		
 	}
 	
 	public static void esperar() {

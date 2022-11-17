@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 import sistema.Menu;
 
@@ -75,12 +76,25 @@ public class Disciplina {
 	//precisa ser usado, caso a disciplina já exista
 	public String getRespostas() throws IOException {
 		File fileGab = new File(caminhoDiretorio, "Gabarito.txt");
-		FileReader gabarito = new FileReader(fileGab);
-		BufferedReader br = new BufferedReader(gabarito);
-		String respostaCorreta = br.readLine();
-		br.close();
-		gabarito.close();
-		gerarGabarito(respostaCorreta);
+		boolean arquivoExiste = fileGab.exists();
+		String respostaCorreta = "";
+		
+		if(arquivoExiste) {
+			FileReader gabarito = new FileReader(fileGab);
+			BufferedReader br = new BufferedReader(gabarito);
+			respostaCorreta = br.readLine();
+			br.close();
+			gabarito.close();
+			gerarGabarito(respostaCorreta);
+			
+		}else {
+			@SuppressWarnings("resource")
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("Informe o gabarito: ");
+			String gabarito = scanner.next().toUpperCase();
+			gerarGabarito(gabarito);
+			return gabarito;
+		}
 		return respostaCorreta;
 	}
 	

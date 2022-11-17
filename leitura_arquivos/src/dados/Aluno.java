@@ -3,12 +3,15 @@ package dados;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import excecao.NenhumaDisciplinaCadastradaException;
 
 public class Aluno {
 
@@ -71,6 +74,10 @@ public class Aluno {
 		}
 		this.nota = nota;
 		
+		if(respostas.equalsIgnoreCase("VVVVVVVVVV") || respostas.equalsIgnoreCase("FFFFFFFFFF")) {
+			this.nota = 0;
+		}
+		
 		File arquivosResultadosAlunos = disciplina.getArquivosResultadosAlunos();
 		FileWriter resultadosDesordenados = new FileWriter(arquivosResultadosAlunos, true); //o true impede a sobrescrita
 		BufferedWriter bw = new BufferedWriter(resultadosDesordenados);
@@ -90,24 +97,35 @@ public class Aluno {
             }
         });
         
-        
+        int contadorDisciplinas = 0;
         for(int i = 0; i < directories.length; i++) {
-        	File resultadosAlunos = new File(path.concat("/").concat(directories[i]).concat("/Resultados.txt"));
-        	FileReader fr = new FileReader(resultadosAlunos);
-        	BufferedReader leitorResultados = new BufferedReader(fr);
-        	String linha = leitorResultados.readLine();
-        	while(linha != null) {
-        		if(linha.contains(this.getNome())) {
-        			System.out.println("\n" + directories[i]);
-					String[] dados = linha.split("    ");
-					System.out.println("Nota: " + dados[1]);
-					break;
-        		}
-        		linha = leitorResultados.readLine();
-        	}
-        	leitorResultados.close();
-			fr.close();
-        }        
+        	try {
+				File resultadosAlunos = new File(path.concat("/").concat(directories[i]).concat("/Resultados.txt"));
+				FileReader fr = new FileReader(resultadosAlunos);
+				BufferedReader leitorResultados = new BufferedReader(fr);
+				String linha = leitorResultados.readLine();
+				while(linha != null) {
+					if(linha.contains(this.getNome())) {
+						System.out.println("\n" + directories[i]);
+						String[] dados = linha.split("    ");
+						System.out.println("Nota: " + dados[1]);
+						contadorDisciplinas++;
+						break;
+					}
+					linha = leitorResultados.readLine();
+				}
+				leitorResultados.close();
+				fr.close();
+			} catch (FileNotFoundException e) {
+				continue;
+			} catch (IOException e) {
+				continue;
+			}
+        } 
+        
+        if(contadorDisciplinas == 0) {
+        	throw new NenhumaDisciplinaCadastradaException();
+        }
 	}
 	
 }
