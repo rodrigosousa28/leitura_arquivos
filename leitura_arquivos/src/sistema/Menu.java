@@ -28,7 +28,7 @@ public class Menu {
 		System.out.println("4. Consultar resultados em ordem alfabética");
 		System.out.println("5. Consultar resultados de um aluno");
 		System.out.println("6. Sair");
-		System.out.print("\nEscolha:");
+		System.out.print("\nEscolha: ");
 		
 	}
 	

@@ -1,5 +1,7 @@
 package excecao;
 
+import java.util.InputMismatchException;
+
 public class Validar {
 
 	private Validar() {}
@@ -17,5 +19,13 @@ public class Validar {
 		}
 	}
 	
+	public static void entrada(int entrada) {
+		
+		boolean condicaoOk = entrada >= 1 && entrada <= 6;
+		if(!condicaoOk) {
+			throw new EntradaInvalidaException();
+		}
+		 
+	}
 	
 }

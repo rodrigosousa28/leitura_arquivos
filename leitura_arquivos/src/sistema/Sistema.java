@@ -3,11 +3,12 @@ package sistema;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import dados.Aluno;
 import dados.Disciplina;
+import excecao.EntradaInvalidaException;
 import excecao.GabaritoInvalidoException;
 import excecao.NenhumaDisciplinaCadastradaException;
 import excecao.Validar;
@@ -28,8 +29,24 @@ public class Sistema {
 		
 		while(continuar.equalsIgnoreCase("S")) {
 			Menu.exibirMenu();
-			int escolha = scan.nextInt();
+			int escolha = 0;
 			
+			while(true) {
+				try {
+					escolha = scan.nextInt();
+					Validar.entrada(escolha);
+					Menu.esperar();
+					break;
+				} catch(EntradaInvalidaException e) {
+					System.out.println(e.getMessage());
+					System.out.println("Escolha: ");
+					continue;
+				} catch(InputMismatchException e) {
+					Menu.finalizarPrograma();
+					return;
+				}
+				
+			}
 			switch(escolha) {
 			case 1: //Vai cadastrar as respostas dos alunos para correção automática
 				
@@ -107,12 +124,12 @@ public class Sistema {
 					aluno.calcularResultado(teste);
 					
 					System.out.println("\nAguarde...");
-					Sistema.esperar();
+					Menu.esperar();
 					
 					System.out.printf("Dados do aluno %s registrados! A nota foi: %d. "
 							+ "Registrar outro aluno? [s/n]: ", aluno.getNome(), aluno.getNota());
 					continuar = scan.next().toUpperCase();
-					Sistema.esperar();
+					Menu.esperar();
 				}
 				
 				teste.gerarResultadosOrdemNumerica();
@@ -173,7 +190,6 @@ public class Sistema {
 					System.out.println(n.getMessage());
 				}
 				
-			//	catch (FileNotFoundException e) {}
 				break;
 			}
 			if(escolha == 6)
@@ -187,11 +203,4 @@ public class Sistema {
 		Menu.finalizarPrograma();
 	}
 	
-	public static void esperar() {
-		try {
-			TimeUnit.SECONDS.sleep(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
 }
