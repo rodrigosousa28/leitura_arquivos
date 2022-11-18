@@ -19,6 +19,7 @@ import sistema.Menu;
 public class Disciplina {
 
 	private String nome;
+	private String caminhoAbsoluto;
 	private File respostasAlunos;
 	private File caminhoDiretorio;
 	private File gabarito;
@@ -30,8 +31,9 @@ public class Disciplina {
 	
 	public Disciplina(String nome) {
 		this.nome = nome;
-		boolean arquivoNaoExiste = !(new File("C:/BancoDados/"+nome)).exists();
-		this.caminhoDiretorio = new File("C:/BancoDados/"+nome);
+		this.caminhoAbsoluto = "C:/BancoDados/";
+		boolean arquivoNaoExiste = !(new File(caminhoAbsoluto.concat(nome))).exists();
+		this.caminhoDiretorio = new File(caminhoAbsoluto.concat(nome));
 		if(arquivoNaoExiste) {
 			this.caminhoDiretorio.mkdir(); //Cria o diretorio, caso nao exista
 			Menu.esperar();
@@ -45,14 +47,18 @@ public class Disciplina {
 		alunos = new ArrayList<>();
 	}
 	
-	//Caso o usuário queira passar o caminho onde o arquivo irá se localizar
+	//Caso o usuário queira passar o caminhoAbsoluto onde o arquivo irá se localizar
 	public Disciplina(String nome, String caminho) {
 		this.nome = nome;
-		boolean arquivoNaoExiste = !(new File(caminho.concat("/").concat(nome))).exists();
+		this.caminhoAbsoluto = caminho;
+		boolean arquivoNaoExiste = !(new File(caminho.concat(nome))).exists();
+		this.caminhoDiretorio = new File(caminhoAbsoluto.concat(nome));
 		if(arquivoNaoExiste) {
-			this.caminhoDiretorio = new File(caminho.concat("/").concat(nome));
-			this.caminhoDiretorio.mkdir(); //Cria o diretorio no caminho especificado
+			this.caminhoDiretorio.mkdir(); //Cria o diretorio no caminhoAbsoluto especificado
+			Menu.esperar();
+			System.out.printf("Disciplina %s criada com sucesso!%n", this.nome);
 		}
+		disciplinaExiste = !arquivoNaoExiste;
 		respostasAlunos = new File(this.caminhoDiretorio, "Respostas dos alunos.txt");
 		resultadosOrdemNumerica = new File(this.caminhoDiretorio, "Resultados em ordem numerica.txt");
 		resultadosOrdemAlfabetica = new File(this.caminhoDiretorio, "Resultados em ordem alfabetica.txt");

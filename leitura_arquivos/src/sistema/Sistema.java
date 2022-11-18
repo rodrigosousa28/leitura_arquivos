@@ -16,7 +16,7 @@ import excecao.Validar;
 public class Sistema {
 
 	public static void main(String[] args) throws IOException {
-		Scanner scan = new Scanner(System.in);
+		Scanner scan = new Scanner(System.in);		
 		
 		boolean bancoDeDadosNaoExiste = !(new File("C:/BancoDados/")).exists();
 		
@@ -43,6 +43,7 @@ public class Sistema {
 					continue;
 				} catch(InputMismatchException e) {
 					Menu.finalizarPrograma();
+					scan.close();
 					return;
 				}
 				
